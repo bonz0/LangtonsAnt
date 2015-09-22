@@ -47,7 +47,7 @@ public class Ant {
     /**
      * Changes the location of the ant based on
      * the direction it is currently facing
-     *//
+     */
     private void stepFoward() {
         switch (direction) {
             case UP:
