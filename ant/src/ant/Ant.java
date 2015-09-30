@@ -59,16 +59,16 @@ public class Ant {
         switch (direction) {
             case UP:
                 location.row--;
-                return;
+                break;
             case RIGHT:
                 location.column++;
-                return;
+                break;
             case DOWN:
                 location.row++;
-                return;
+                break;
             case LEFT:
                 location.column--;
-                return;
+                break;
         }
 
         if (!grid.isValid(location)) {
