@@ -2,6 +2,8 @@ package ant;
 
 import grid.Grid;
 
+import java.awt.*;
+
 /**
  * Langton's Ant that runs on a Grid
  *
@@ -34,21 +36,26 @@ public class Ant {
      * 2. Step forward one cell
      * 3. Toggle the color of the previous cell
      */
-    public void move(Grid grid, boolean print) {
+    public void move(Grid grid) {
         Grid.Point previousLocation = new Grid.Point(location);
         turn(grid);
-        stepFoward();
+        stepFoward(grid);
         grid.toggle(previousLocation);
-        //if (print) {
-        //    grid.printGrid();
-        //}
+        colorCurrentGridLocation(grid);
+    }
+
+    /**
+     * Colors the current location of the ant RED
+     */
+    private void colorCurrentGridLocation(Grid grid) {
+        grid.color(location, Color.RED);
     }
     
     /**
      * Changes the location of the ant based on
      * the direction it is currently facing
      */
-    private void stepFoward() {
+    private void stepFoward(Grid grid) {
         switch (direction) {
             case UP:
                 location.row--;
@@ -62,6 +69,11 @@ public class Ant {
             case LEFT:
                 location.column--;
                 return;
+        }
+
+        if (!grid.isValid(location)) {
+            System.out.println("ERROR: Ant tried to go out of bounds of the grid!");
+            System.exit(1);
         }
     } 
     
@@ -81,17 +93,17 @@ public class Ant {
      * @author bonz0
      */
     public enum Direction {
-        UP(0),
-        RIGHT(1),
-        DOWN(2),
-        LEFT(3);
+        UP (0),
+        RIGHT (1),
+        DOWN (2),
+        LEFT (3);
         
         private final int value;
         
         Direction(int value) {
             this.value = value;
         }
-        
+
         public Direction right() {
             int newValue = (value == LEFT.value) ? UP.value : value + 1;
             return fromInteger(newValue);

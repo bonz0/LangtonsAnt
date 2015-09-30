@@ -10,8 +10,8 @@ import grid.Grid;
  */
 public class Main {
     public static void main(String[] args) {
-        final int gridSize = 80;
-        final int numberOfIterations = 3000;
+        final int gridSize = 130;
+        final int numberOfIterations = 13000;
         int userIterations = 0;
         if (args.length == 1) {
             userIterations = Integer.parseInt(args[0]);
@@ -35,9 +35,9 @@ public class Main {
             
         }
         for (int i = 0; i < iterations; i++) {
-            ant.move(grid, (i % 10 == 0));
+            ant.move(grid);
             try {
-                Thread.sleep(20);
+                Thread.sleep(100);
             } catch (Exception e) {
                 System.err.println("Thread interrupted");
             }

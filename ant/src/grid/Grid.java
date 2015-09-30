@@ -1,8 +1,6 @@
 package grid;
 
-import ant.Ant;
-
-import javax.swing.*;
+import java.awt.*;
 
 /**
  * The grid on which the ant moves
@@ -14,38 +12,59 @@ public class Grid {
     private final boolean grid[][];
     private final int numRows;
     private final int numColumns;
+    private final Canvas canvas;
     
     public Grid(int rows, int columns) {
         this.grid = new boolean[rows][columns];
         this.numRows = rows;
         this.numColumns = columns;
+        this.canvas = new Canvas(rows, columns);
     }
     
     public Point getStartingPoint() {
-        return new Point((numRows / 2) - 10, (numColumns / 2) + 10);
+        return new Point((numRows / 2) - 25, (numColumns / 2) + 25);
     }
     
-    public void toggle(Point point) {
-        if (!isValid(point)) {
-            System.out.println("ERROR");
-            System.exit(1);
+    public void toggle(Point previousPoint) {
+        boolean isWhite = isWhite(previousPoint);
+        if (isWhite) {
+            color(previousPoint, Color.BLACK);
+        } else {
+            color(previousPoint, Color.WHITE);
         }
-        this.grid[point.row][point.column] = !this.grid[point.row][point.column];
+        grid[previousPoint.row][previousPoint.column] = isWhite;
     }
-    
-    private boolean isValid(Point p) {
-        return (p.row >= 0 && p.row < this.numRows &&
-                p.column >= 0 && p.column < this.numColumns);
+
+    /**
+     * Returns:
+     * - true, if the point provided to it is not out of bounds of the grid.
+     * - false, if the point provided to it is out of bounds of the grid.
+     */
+    public boolean isValid(Point p) {
+        return (p.row >= 0 && p.row < numRows && p.column >= 0 && p.column < numColumns);
     }
-    
+
+    /**
+     * Returns true if the point passed to it is white, else returns false
+     */
     public boolean isWhite(Point point) {
         if (!isValid(point)) {
-            System.out.println("ERROR");
+            System.out.println("ERROR: Ant tried to go out of bounds of the grid!");
             System.exit(1);
         }
         return !grid[point.row][point.column];
     }
-    
+
+    /**
+     * Colors the input point on the grid with the input color
+     */
+    public void color(Point point, Color color) {
+        canvas.color(point.row, point.column, color);
+    }
+
+    /**
+     * Helper method to print the grid to STDOUT
+     */
     public void printGrid() {
         for (boolean[] row : grid) {
             for (boolean cell : row) {
